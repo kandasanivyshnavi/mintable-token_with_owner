@@ -40,7 +40,7 @@ module mintable_token_with_owner::MintableToken {
         );
    coin::destroy_freeze_cap(freeze_cap);
 
-        // Store token info with mint and burn capabilities
+        
         let token_info = TokenInfo {
             name,
             symbol,
@@ -71,3 +71,4 @@ module mintable_token_with_owner::MintableToken {
     }
 
 }
+
