@@ -1,0 +1,17 @@
+[package]
+name = "mintable_token_with_owner"
+version = "1.0.0"
+authors = []
+
+[addresses]
+mintable_token_with_owner = "0x511009af43ee0e6673fd433ee8d32c78c4d08a0721250dfd4b62bf4522895323"
+
+[dependencies.AptosFramework]
+git = "https://github.com/aptos-labs/aptos-framework.git"
+rev = "mainnet"
+subdir = "aptos-framework"
+
+[dependencies.AptosStdlib]
+git = "https://github.com/aptos-labs/aptos-framework.git"
+rev = "mainnet"
+subdir = "aptos-stdlib"
