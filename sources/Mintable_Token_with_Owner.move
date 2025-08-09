@@ -3,11 +3,11 @@ module mintable_token_with_owner::MintableToken {
     use std::string::String;
     use aptos_framework::coin::{Self, MintCapability, BurnCapability};
 
-    /// Error codes
+  
     const E_NOT_OWNER: u64 = 1;
     const E_ALREADY_INITIALIZED: u64 = 2;
 
-    /// Token information struct
+   
     struct TokenInfo has key {
         name: String,
         symbol: String,
@@ -16,10 +16,10 @@ module mintable_token_with_owner::MintableToken {
         burn_cap: BurnCapability<MintableToken>,
     }
 
-    /// The token type
+ 
     struct MintableToken {}
 
-    /// Initialize the token (can only be called once by the owner)
+    
     public fun initialize_token(
         owner: &signer,
         name: String,
@@ -28,10 +28,9 @@ module mintable_token_with_owner::MintableToken {
     ) {
         let owner_addr = signer::address_of(owner);
         
-        // Ensure token hasn't been initialized yet
         assert!(!exists<TokenInfo>(owner_addr), E_ALREADY_INITIALIZED);
 
-        // Initialize the coin
+        
         let (burn_cap, freeze_cap, mint_cap) = coin::initialize<MintableToken>(
             owner,
             name,
@@ -39,9 +38,7 @@ module mintable_token_with_owner::MintableToken {
             decimals,
             true, // monitor_supply
         );
-
-        // Destroy freeze capability as we don't need it
-        coin::destroy_freeze_cap(freeze_cap);
+   coin::destroy_freeze_cap(freeze_cap);
 
         // Store token info with mint and burn capabilities
         let token_info = TokenInfo {
@@ -55,7 +52,7 @@ module mintable_token_with_owner::MintableToken {
         move_to(owner, token_info);
     }
 
-    /// Mint new tokens (only owner can call this)
+    
     public fun mint_tokens(
         owner: &signer,
         to: address,
@@ -63,13 +60,14 @@ module mintable_token_with_owner::MintableToken {
     ) acquires TokenInfo {
         let owner_addr = signer::address_of(owner);
         
-        // Ensure only owner can mint
+      
         assert!(exists<TokenInfo>(owner_addr), E_NOT_OWNER);
         
         let token_info = borrow_global<TokenInfo>(owner_addr);
         
-        // Mint coins and deposit to recipient
+        
         let minted_coins = coin::mint<MintableToken>(amount, &token_info.mint_cap);
         coin::deposit<MintableToken>(to, minted_coins);
     }
+
 }
